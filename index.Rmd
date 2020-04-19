@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Data Sources
 
 
-```{r}
+```{r, include=FALSE}
 library(tidyverse)
 library(lubridate)
 library(data.table) # need this for the "%like%"function
