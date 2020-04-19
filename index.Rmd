@@ -1,0 +1,44 @@
+---
+title: "Monto PA COVID-19 Data"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Sources
+
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(data.table) # need this for the "%like%"function
+```
+
+```{r, echo=FALSE}
+tz_latest <- read.csv("https://storage.googleapis.com/montco-stats/tz.csv")
+jhu_latest <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv")
+```
+
+```{r, echo=FALSE}
+# data cleanup
+tz_latest$datetime <- ymd_hms(tz_latest$timeStamp, tz=NULL)
+tz_latest$desc <- as.character(tz_latest$desc)
+tz_latest$zip <- as.character(tz_latest$zip)
+
+```
+
+## 911 Calls for Fever
+
+```{r, echo=FALSE}
+tz_latest_fever <- tz_latest[ which (tz_latest$title == "EMS: FEVER"), ]
+fever_by_month <- table(cut(tz_latest_fever$datetime, 'month'))
+fever_calls_by_month <- as.data.frame(fever_by_month)
+colnames(fever_calls_by_month) <- c("month", "fever_number_of_calls")
+fever_calls_by_month$month <- ymd(fever_calls_by_month$month, tz=NULL)
+ggplot(data = fever_calls_by_month, aes(x=month, y=fever_number_of_calls)) +
+  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months") +
+  theme_minimal() +
+  theme(axis.text.x=element_text(angle=60, hjust=1))
+```
