@@ -27,9 +27,9 @@ tz_latest$zip <- as.character(tz_latest$zip)
 ```
 **This is a work in progress. Please check in regularly for more updated plots. I try to update this page at least twice a week or more.**
 
-## HISTORICAL TRENDS IN 911 CALLS FROM 2015 TO PRESENT FOR SELECT COMPLAINTS
+## Historical Trends In 911 Calls From 2015 To Present For Select Complaints
 
-## 911 Calls for Fever
+### 911 Calls for Fever
 Very notable spike in calls at the beginning of 2020 compared to previous years
 
 ```{r, echo=FALSE}
@@ -46,7 +46,7 @@ ggplot(tz_latest_fever, aes(x=as.Date(month), y=number_of_calls_fever)) +
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-## 911 Calls for Respiratory Emergencies
+### 911 Calls for Respiratory Emergencies
 No noticeable spike here which is unexpected considering the initial understanding of SARS-CoV2 to be a respiratory virus
 
 ```{r, echo=FALSE}
@@ -64,7 +64,7 @@ ggplot(tz_latest_resp, aes(x=as.Date(month), y=number_of_calls_resp)) +
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-## 911 Calls for Cardiac Emergencies
+### 911 Calls for Cardiac Emergencies
 No noticeable spike here
 
 ```{r, echo=FALSE}
@@ -82,7 +82,7 @@ ggplot(tz_latest_cardiac, aes(x=as.Date(month), y=number_of_calls_cardiac)) +
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-## 911 Calls for Medic Alert Alarms
+### 911 Calls for Medic Alert Alarms
 A noticeable spike in medic alert alarms starting late 2019, may be completely unrelated but would be interesting to triangulate and see if most of these are from nursing home locations?
 
 ```{r, echo=FALSE}
@@ -100,7 +100,7 @@ ggplot(tz_latest_medicalert, aes(x=as.Date(month), y=number_of_calls_medicalert)
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-## 911 Calls for Traffic-related incidents
+###  Calls for Traffic-related incidents
 A total drop off in 911 calls for traffic-related, likely a strong reflection of the quarantine measures, fewer people out and about.
 
 ```{r, echo=FALSE}
@@ -161,7 +161,7 @@ montco_data_cases <- montco_data %>% rbind(montco_data, as.vector(unlist(str_spl
 #   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-## Comparing Calls for Fever with Confirmed Cases 
+### Comparing Calls for Fever with Confirmed Cases 
 Exploring the correlation between number of calls for fever and number of confirmed cases we see a lag in the trends which may be indicative of the delay between when COVID-19 may have started affecting people in the area vs when confirmation of diagnosis (not an individual basis but from a general big-picture perspective)
 ```{r, echo=FALSE}
 #merge the two
@@ -201,9 +201,9 @@ ggplot(merged, aes(x=week)) +
   labs(title = "Number of 911 Calls for Fever compared with Number of Confirmed Cases", subtitle = "Montgomery County, PA")
 ```
 
-## DATA SOURCES:
-COVID-19 Case Numbers - John Hopkins University
-Montgomery County EMS Data - Compiled and provided by Mike Chirico
+### DATA SOURCES:
+* COVID-19 Case Numbers - John Hopkins University
+* Montgomery County EMS Data - Compiled and provided by Mike Chirico
 
-## REFERENCES:
+### REFERENCES:
 
