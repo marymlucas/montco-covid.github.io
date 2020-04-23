@@ -1,5 +1,5 @@
 ---
-title: "Montgomery County, PA - 911 Call Data and COVID-19 Analysis"
+title: "Montgomery County, PA - 911 Calls and COVID-19 Exploratory Data Analysis"
 ---
 
 ```{r setup, include=FALSE}
@@ -25,8 +25,9 @@ tz_latest$desc <- as.character(tz_latest$desc)
 tz_latest$zip <- as.character(tz_latest$zip)
 
 ```
+**This is a work in progress. Please check in regularly for more updated plots. I try to update this page at least twice a week or more.**
 
-## CALL TRENDS FROM 2015 TO PRESENT FOR SELECT COMPLAINTS
+## HISTORICAL TRENDS IN 911 CALLS FROM 2015 TO PRESENT FOR SELECT COMPLAINTS
 
 ## 911 Calls for Fever
 Very notable spike in calls at the beginning of 2020 compared to previous years
@@ -151,17 +152,17 @@ montco_data_cases <- montco_data %>% rbind(montco_data, as.vector(unlist(str_spl
   mutate(date =  mdy(date), number_of_cases = as.numeric(number_of_cases)) %>%
   filter(wday(date) == 1) # to matchup with dates in the fevers table
 
-ggplot(montco_data_cases, aes(x=as.Date(date), y=number_of_cases)) +
-  geom_line() + scale_x_date(date_breaks = "2 weeks") +
-  theme_minimal() +
-  labs(title = "COVID-19 Confirmed Cases by Week", subtitle = "Montgomery County, PA (tuesdays") +
-  xlab("Week") +
-  ylab("Total Number of Cases") +
-  theme(axis.text.x=element_text(angle=60, hjust=1))
+# ggplot(montco_data_cases, aes(x=as.Date(date), y=number_of_cases)) +
+#   geom_line() + scale_x_date(date_breaks = "2 weeks") +
+#   theme_minimal() +
+#   labs(title = "COVID-19 Confirmed Cases by Week", subtitle = "Montgomery County, PA (tuesdays") +
+#   xlab("Week") +
+#   ylab("Total Number of Cases") +
+#   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
 ## Comparing Calls for Fever with Confirmed Cases 
-Exploring the correlation between number of calls for fever and number of confirmed cases we see a lag the trend for both which may be indicative of the delay between when COVID-19 may have started affecting people in the area vs when confirmation of diagnosis (not an individual basis but from a general big-picture perspective)
+Exploring the correlation between number of calls for fever and number of confirmed cases we see a lag in the trends which may be indicative of the delay between when COVID-19 may have started affecting people in the area vs when confirmation of diagnosis (not an individual basis but from a general big-picture perspective)
 ```{r, echo=FALSE}
 #merge the two
 tz_latest_fever_2020$week <- as.Date(tz_latest_fever_2020$week)
@@ -199,3 +200,10 @@ ggplot(merged, aes(x=week)) +
 
   labs(title = "Number of 911 Calls for Fever compared with Number of Confirmed Cases", subtitle = "Montgomery County, PA")
 ```
+
+## DATA SOURCES:
+COVID-19 Case Numbers - John Hopkins University
+Montgomery County EMS Data - Compiled and provided by Mike Chirico
+
+## REFERENCES:
+
