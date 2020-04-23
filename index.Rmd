@@ -167,7 +167,6 @@ Exploring the correlation between number of calls for fever and number of confir
 tz_latest_fever_2020$week <- as.Date(tz_latest_fever_2020$week)
 merged <- left_join(tz_latest_fever_2020, montco_data_cases, by = c("week" = "date"))
 merged$number_of_cases[is.na(merged$number_of_cases)] <- 0
-merged
 ```
 ```{r, echo=FALSE}
 coeff <- 50
@@ -178,7 +177,9 @@ casesColor <- rgb(0.2, 0.6, 0.9, 1)
 
 ggplot(merged, aes(x=week)) +
   
-  geom_line( aes(y=number_of_calls_fever_2020), color=callsColor) + 
+  geom_line( aes(y=number_of_calls_fever_2020), color=callsColor) +
+  scale_x_date(date_breaks = "2 weeks") +
+  theme_minimal() +
   geom_line( aes(y=number_of_cases / coeff), color=casesColor) +
   
   scale_y_continuous(
@@ -192,7 +193,8 @@ ggplot(merged, aes(x=week)) +
 
   theme(
     axis.title.y = element_text(color = callsColor, size=13),
-    axis.title.y.right = element_text(color = casesColor, size=13)
+    axis.title.y.right = element_text(color = casesColor, size=13),
+    axis.text.x=element_text(angle=60, hjust=1)
   ) +
 
   labs(title = "Number of 911 Calls for Fever compared with Number of Confirmed Cases", subtitle = "Montgomery County, PA")
