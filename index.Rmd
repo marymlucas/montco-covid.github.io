@@ -160,11 +160,40 @@ ggplot(montco_data_cases, aes(x=as.Date(date), y=number_of_cases)) +
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
+## Comparing Calls for Fever with Confirmed Cases 
+Exploring the correlation between number of calls for fever and number of confirmed cases we see a lag the trend for both which may be indicative of the delay between when COVID-19 may have started affecting people in the area vs when confirmation of diagnosis (not an individual basis but from a general big-picture perspective)
 ```{r, echo=FALSE}
 #merge the two
 tz_latest_fever_2020$week <- as.Date(tz_latest_fever_2020$week)
 merged <- left_join(tz_latest_fever_2020, montco_data_cases, by = c("week" = "date"))
 merged$number_of_cases[is.na(merged$number_of_cases)] <- 0
 merged
+```
+```{r, echo=FALSE}
+coeff <- 50
 
+# A few constants
+callsColor <- "#69b3a2"
+casesColor <- rgb(0.2, 0.6, 0.9, 1)
 
+ggplot(merged, aes(x=week)) +
+  
+  geom_line( aes(y=number_of_calls_fever_2020), color=callsColor) + 
+  geom_line( aes(y=number_of_cases / coeff), color=casesColor) +
+  
+  scale_y_continuous(
+    
+    # Features of the first axis
+    name = "Number of Calls",
+    
+    # Add a second axis and specify its features
+    sec.axis = sec_axis(~.*coeff, name="Total Confirmed Cases")
+  ) + 
+
+  theme(
+    axis.title.y = element_text(color = callsColor, size=13),
+    axis.title.y.right = element_text(color = casesColor, size=13)
+  ) +
+
+  labs(title = "Number of 911 Calls for Fever compared with Number of Confirmed Cases", subtitle = "Montgomery County, PA")
+```
