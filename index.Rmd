@@ -73,7 +73,7 @@ ggplot(tz_latest_resp, aes(x=as.Date(month), y=number_of_calls_resp)) +
 No noticeable spike here
 
 ```{r, echo=FALSE, warning=FALSE}
-# Calls for Respiratory Emergencies
+# Calls for Cardiac Emergencies
 tz_latest_cardiac <- tz_latest %>% filter(title == "EMS: CARDIAC EMERGENCY") %>%
   group_by(month=floor_date(datetime, "week")) %>%
   tally(name = 'number_of_calls_cardiac') 
@@ -180,6 +180,7 @@ tz_latest_fever_2020$week <- as.Date(tz_latest_fever_2020$week)
 merged <- left_join(tz_latest_fever_2020, montco_data_cases, by = c("week" = "date"))
 merged$number_of_cases[is.na(merged$number_of_cases)] <- 0
 ```
+
 ```{r, echo=FALSE, warning=FALSE}
 coeff <- 50
 
@@ -213,8 +214,8 @@ ggplot(merged, aes(x=week)) +
 ```
 
 ### DATA SOURCES:
-* COVID-19 Case Numbers - John Hopkins University
-* Montgomery County EMS Data - Compiled and provided by Mike Chirico (originally sourced from montcoalert.org)
+* COVID-19 Case Numbers - [John Hopkins University] (https://coronavirus.jhu.edu/map.html) 
+* Montgomery County EMS Data - Compiled and provided by [Mike Chirico] (https://www.kaggle.com/mchirico/montcoalert) (originally sourced from montcoalert.org)
 
 ### REFERENCES:
 To come.
