@@ -19,6 +19,10 @@ jhu_latest <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-1
 ```
 
 ```{r, echo=FALSE}
+jhu_deaths <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")
+```
+ 
+```{r, echo=FALSE}
 # data cleanup
 tz_latest$datetime <- ymd_hms(tz_latest$timeStamp, tz=NULL)
 tz_latest$desc <- as.character(tz_latest$desc)
@@ -30,7 +34,9 @@ tz_latest$zip <- as.character(tz_latest$zip)
 ## Historical Trends In 911 Calls From 2015 To Present For Select Complaints
 
 ### 911 Calls for Fever
-Very notable spike in calls at the beginning of 2020 compared to previous years.  Scroll down to see a more focused plot speficic for 2020 calls.
+Very notable spike in calls at the beginning of 2020 compared to previous years.  Scroll down to see a more focused plot specific for 2020 calls.
+*The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.*
+
 
 ```{r, echo=FALSE, warning=FALSE}
 tz_latest_fever <- tz_latest %>% filter(title == "EMS: FEVER") %>%
@@ -52,7 +58,8 @@ ggplot(tz_latest_fever, aes(x=as.Date(month), y=number_of_calls_fever)) +
 ```
 
 ### 911 Calls for Respiratory Emergencies
-A very slight increase here which surprised me. I was expecting to see a much higher spike considering the initial understanding of SARS-CoV2 to be a respiratory virus
+A very slight increase here which surprised me. I was expecting to see a much higher spike considering the initial understanding of SARS-CoV2 to be a respiratory virus.  
+The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
 
 ```{r, echo=FALSE, warning=FALSE}
 # Calls for Respiratory Emergencies
@@ -70,7 +77,8 @@ ggplot(tz_latest_resp, aes(x=as.Date(month), y=number_of_calls_resp)) +
 ```
 
 ### 911 Calls for Cardiac Emergencies
-No noticeable spike here
+No noticeable spike here. The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
+
 
 ```{r, echo=FALSE, warning=FALSE}
 # Calls for Cardiac Emergencies
@@ -88,7 +96,7 @@ ggplot(tz_latest_cardiac, aes(x=as.Date(month), y=number_of_calls_cardiac)) +
 ```
 
 ### 911 Calls for Medic Alert Alarms
-A noticeable increase in medic alert alarms starting late 2019, may be completely unrelated but would be interesting to triangulate and see if most of these are from nursing home locations?
+A noticeable increase in medic alert alarms starting late 2019, may be completely unrelated but would be interesting to triangulate and see if most of these are from nursing home locations?  
 
 ```{r, echo=FALSE, warning=FALSE}
 # Calls for Medic Alert Alarms
@@ -125,7 +133,8 @@ ggplot(tz_latest_traffic, aes(x=as.Date(month), y=number_of_calls_traffic)) +
 
 
 ## SINCE START OF COVID-19
-Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US
+Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US.  The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
+
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -147,14 +156,13 @@ ggplot(tz_latest_fever_2020, aes(x=as.Date(week), y=number_of_calls_fever_2020))
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-
 ```{r, echo=FALSE, warning=FALSE}
 # Extract Covid-19 data for Montco PA only
-
-montco_data <- jhu_latest %>% filter(Combined_Key == "Montgomery, Pennsylvania, US") %>%
-  select(starts_with("X"))  
   
-montco_data_cases <- montco_data %>% rbind(montco_data, as.vector(unlist(str_split(colnames(montco_data), " ")))) %>%
+montco_cases <- jhu_latest %>% filter(Combined_Key == "Montgomery, Pennsylvania, US") %>%
+  select(starts_with("X")) 
+
+montco_data_cases <- montco_cases %>% rbind(montco_cases, as.vector(unlist(str_split(colnames(montco_cases), " ")))) %>%
   t() %>%
   as_tibble(.name_repair = NULL) %>%
   mutate(date = str_sub(V3, 2)) %>%
@@ -166,12 +174,35 @@ montco_data_cases <- montco_data %>% rbind(montco_data, as.vector(unlist(str_spl
 # ggplot(montco_data_cases, aes(x=as.Date(date), y=number_of_cases)) +
 #   geom_line() + scale_x_date(date_breaks = "2 weeks") +
 #   theme_minimal() +
-#   labs(title = "COVID-19 Confirmed Cases by Week", subtitle = "Montgomery County, PA (tuesdays") +
+#   labs(title = "COVID-19 Confirmes Cases by Week", subtitle = "Montgomery County, PA (tuesdays") +
 #   xlab("Week") +
 #   ylab("Total Number of Cases") +
 #   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
+```{r, echo=FALSE, warning=FALSE}
+# Extract Covid-19 death data for Montco PA only
+
+montco_deaths <- jhu_deaths %>% filter(Combined_Key == "Montgomery, Pennsylvania, US") %>%
+  select(starts_with("X"))
+
+montco_data_deaths <- montco_deaths %>% rbind(montco_deaths, as.vector(unlist(str_split(colnames(montco_deaths), " ")))) %>%
+  t() %>%
+  as_tibble(.name_repair = NULL) %>%
+  mutate(date = str_sub(V3, 2)) %>%
+  select(date, number_of_deaths = V1) %>%
+  mutate(date =  mdy(date), number_of_deaths = as.numeric(number_of_deaths)) %>%
+  filter(wday(date) == 1) # to matchup with dates in the fevers table
+
+#montco_data_deaths
+ggplot(montco_data_deaths, aes(x=as.Date(date), y=number_of_deaths)) +
+  geom_line() + scale_x_date(date_breaks = "2 weeks") +
+  theme_minimal() +
+  labs(title = "COVID-19 Deaths by Week", subtitle = "Montgomery County, PA (tuesdays") +
+  xlab("Week") +
+  ylab("Total Number of Deaths") +
+  theme(axis.text.x=element_text(angle=60, hjust=1))
+```
 ### Comparing Calls for Fever with Confirmed Cases 
 Exploring the correlation between number of calls for fever and number of confirmed cases we see a lag in the trends which may be indicative of the delay between when COVID-19 may have started affecting people in the area vs when confirmation of diagnosis (not an individual basis but from a general big-picture perspective)
 ```{r, echo=FALSE, warning=FALSE}
@@ -185,8 +216,8 @@ merged$number_of_cases[is.na(merged$number_of_cases)] <- 0
 coeff <- 50
 
 # A few constants
-callsColor <- "#69b3a2"
-casesColor <- rgb(0.2, 0.6, 0.9, 1)
+callsColor <- "blue"
+casesColor <- "magenta"
 
 ggplot(merged, aes(x=week)) +
   
