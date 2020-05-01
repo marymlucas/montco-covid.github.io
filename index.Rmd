@@ -94,6 +94,23 @@ ggplot(tz_latest_cardiac, aes(x=as.Date(month), y=number_of_calls_cardiac)) +
   ylab("Number of Calls") +
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
+### 911 Calls for Cardiac Arrests
+Fairly consistent
+
+```{r, echo=FALSE, warning=FALSE}
+# Calls for Cardiac Arrests
+tz_latest_arrest <- tz_latest %>% filter(title == "EMS: CARDIAC ARREST") %>%
+  group_by(month=floor_date(datetime, "week")) %>%
+  tally(name = 'number_of_calls_arrest') 
+
+ggplot(tz_latest_arrest, aes(x=as.Date(month), y=number_of_calls_arrest)) +
+  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  theme_minimal() +
+  #labs(title = "911 Calls for Cardiac Arrests", subtitle = "Montgomery County, PA") +
+  xlab("Month -Year") +
+  ylab("Number of Calls") +
+  theme(axis.text.x=element_text(angle=60, hjust=1))
+```
 
 ### 911 Calls for Medic Alert Alarms
 A noticeable increase in medic alert alarms starting late 2019, may be completely unrelated but would be interesting to triangulate and see if most of these are from nursing home locations?  
@@ -133,7 +150,7 @@ ggplot(tz_latest_traffic, aes(x=as.Date(month), y=number_of_calls_traffic)) +
 
 
 ## SINCE START OF COVID-19
-Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US.  The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
+Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US.  While we now see the number of calls dropping to early February levels, the ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
 
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -248,5 +265,4 @@ ggplot(merged, aes(x=week)) +
 * COVID-19 Case Numbers - [John Hopkins University] (https://coronavirus.jhu.edu/map.html) 
 * Montgomery County EMS Data - Compiled and provided by [Mike Chirico] (https://www.kaggle.com/mchirico/montcoalert) (originally sourced from montcoalert.org)
 
-### REFERENCES:
-To come.
+
