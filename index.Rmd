@@ -38,7 +38,7 @@ Very notable spike in calls at the beginning of 2020 compared to previous years.
 *The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.*
 
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 tz_latest_fever <- tz_latest %>% filter(title == "EMS: FEVER") %>%
   group_by(month=floor_date(datetime, "week")) %>%
   tally(name = 'number_of_calls_fever') 
@@ -49,7 +49,7 @@ max_date <- Sys.Date()
 lims <- c(min_date, max_date)
 
 ggplot(tz_latest_fever, aes(x=as.Date(month), y=number_of_calls_fever)) +
-  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_bar(stat = "identity") + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) + geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   #labs(title = "911 Calls for Fever", subtitle = "Montgomery County, PA") +
   xlab("Month -Year") +
@@ -61,14 +61,15 @@ ggplot(tz_latest_fever, aes(x=as.Date(month), y=number_of_calls_fever)) +
 A very slight increase here which surprised me. I was expecting to see a much higher spike considering the initial understanding of SARS-CoV2 to be a respiratory virus.  
 The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for Respiratory Emergencies
 tz_latest_resp <- tz_latest %>% filter(title == "EMS: RESPIRATORY EMERGENCY") %>%
   group_by(month=floor_date(datetime, "week")) %>%
   tally(name = 'number_of_calls_resp') 
 
 ggplot(tz_latest_resp, aes(x=as.Date(month), y=number_of_calls_resp)) +
-  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_bar(stat = "identity") + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   #labs(title = "911 Calls for Respiratory Emergencies", subtitle = "Montgomery County, PA") +
   xlab("Month -Year") +
@@ -80,31 +81,33 @@ ggplot(tz_latest_resp, aes(x=as.Date(month), y=number_of_calls_resp)) +
 No noticeable spike here. The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
 
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for Cardiac Emergencies
 tz_latest_cardiac <- tz_latest %>% filter(title == "EMS: CARDIAC EMERGENCY") %>%
   group_by(month=floor_date(datetime, "week")) %>%
   tally(name = 'number_of_calls_cardiac') 
 
 ggplot(tz_latest_cardiac, aes(x=as.Date(month), y=number_of_calls_cardiac)) +
-  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_bar(stat = "identity") + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   #labs(title = "911 Calls for Cardiac Emergencies", subtitle = "Montgomery County, PA") +
   xlab("Month -Year") +
   ylab("Number of Calls") +
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
+
 ### 911 Calls for Cardiac Arrests
 Fairly consistent
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for Cardiac Arrests
 tz_latest_arrest <- tz_latest %>% filter(title == "EMS: CARDIAC ARREST") %>%
   group_by(month=floor_date(datetime, "week")) %>%
   tally(name = 'number_of_calls_arrest') 
 
 ggplot(tz_latest_arrest, aes(x=as.Date(month), y=number_of_calls_arrest)) +
-  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_bar(stat = "identity") + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) + geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   #labs(title = "911 Calls for Cardiac Arrests", subtitle = "Montgomery County, PA") +
   xlab("Month -Year") +
@@ -115,14 +118,14 @@ ggplot(tz_latest_arrest, aes(x=as.Date(month), y=number_of_calls_arrest)) +
 ### 911 Calls for Medic Alert Alarms
 A noticeable increase in medic alert alarms starting late 2019, may be completely unrelated but would be interesting to triangulate and see if most of these are from nursing home locations?  
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for Medic Alert Alarms
 tz_latest_medicalert <- tz_latest %>% filter(title == "EMS: MEDICAL ALERT ALARM") %>%
   group_by(month=floor_date(datetime, "week")) %>%
   tally(name = 'number_of_calls_medicalert') 
 
 ggplot(tz_latest_medicalert, aes(x=as.Date(month), y=number_of_calls_medicalert)) +
-  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_bar(stat = "identity") + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) + geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   #labs(title = "911 Calls for Medic Alert Alarms", subtitle = "by month and year") +
   xlab("Month -Year") +
@@ -133,14 +136,14 @@ ggplot(tz_latest_medicalert, aes(x=as.Date(month), y=number_of_calls_medicalert)
 ###  Calls for Traffic-related incidents
 A total drop off in 911 calls for traffic-related, likely a strong reflection of the quarantine measures, fewer people out and about.
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for traffic incidents
 tz_latest_traffic <- tz_latest %>% filter(title %like% ("Traffic:")) %>%
   group_by(month=floor_date(datetime, "week")) %>%
   tally(name = 'number_of_calls_traffic') 
 
 ggplot(tz_latest_traffic, aes(x=as.Date(month), y=number_of_calls_traffic)) +
-  geom_line() + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) +
+  geom_bar(stat = "identity") + scale_x_date(date_labels = "%m-%Y", date_breaks = "2 months", limits = lims) + geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   #labs(title = "911 Calls for Traffic Issues", subtitle = "by month and year") +
   xlab("Month -Year") +
@@ -153,7 +156,7 @@ ggplot(tz_latest_traffic, aes(x=as.Date(month), y=number_of_calls_traffic)) +
 Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US.  While we now see the number of calls dropping to early February levels, the ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
 
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
 # Extract 2020 call data for fever
 tz_latest_fever_2020 <- tz_latest %>% filter(datetime>= "2020-01-01" & title == "EMS: FEVER") %>% group_by(week=floor_date(datetime, "week")) %>%
@@ -165,7 +168,8 @@ lims = c(min_date, max_date)
 
 #tz_latest_fever_2020
 ggplot(tz_latest_fever_2020, aes(x=as.Date(week), y=number_of_calls_fever_2020)) +
-  geom_line() + scale_x_date(date_breaks = "week", limits = lims) +
+  geom_bar(stat="identity") + scale_x_date(date_breaks = "week", limits = lims) +
+  geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   labs(title = "911 Calls for Fever", subtitle = "Montgomery County, PA") +
   xlab("Month") +
@@ -173,7 +177,7 @@ ggplot(tz_latest_fever_2020, aes(x=as.Date(week), y=number_of_calls_fever_2020))
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE,message=FALSE}
 # Extract Covid-19 data for Montco PA only
   
 montco_cases <- jhu_latest %>% filter(Combined_Key == "Montgomery, Pennsylvania, US") %>%
@@ -187,17 +191,18 @@ montco_data_cases <- montco_cases %>% rbind(montco_cases, as.vector(unlist(str_s
   mutate(date =  mdy(date), number_of_cases = as.numeric(number_of_cases)) %>%
   filter(wday(date) == 1) # to matchup with dates in the fevers table
 
-# montco_data_cases
-# ggplot(montco_data_cases, aes(x=as.Date(date), y=number_of_cases)) +
-#   geom_line() + scale_x_date(date_breaks = "2 weeks") +
-#   theme_minimal() +
-#   labs(title = "COVID-19 Confirmes Cases by Week", subtitle = "Montgomery County, PA (tuesdays") +
-#   xlab("Week") +
-#   ylab("Total Number of Cases") +
-#   theme(axis.text.x=element_text(angle=60, hjust=1))
+
+ggplot(montco_data_cases, aes(x=as.Date(date), y=number_of_cases)) +
+  geom_bar(stat = "identity") + scale_x_date(date_breaks = "2 weeks") + 
+  geom_smooth(method = "gam", color = "red", se = FALSE) +
+  theme_minimal() +
+  labs(title = "COVID-19 Confirmes Cases by Week", subtitle = "Montgomery County, PA (tuesdays") +
+  xlab("Week") +
+  ylab("Total Number of Cases") +
+  theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
 
-```{r, echo=FALSE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Extract Covid-19 death data for Montco PA only
 
 montco_deaths <- jhu_deaths %>% filter(Combined_Key == "Montgomery, Pennsylvania, US") %>%
@@ -213,13 +218,16 @@ montco_data_deaths <- montco_deaths %>% rbind(montco_deaths, as.vector(unlist(st
 
 #montco_data_deaths
 ggplot(montco_data_deaths, aes(x=as.Date(date), y=number_of_deaths)) +
-  geom_line() + scale_x_date(date_breaks = "2 weeks") +
+  geom_bar(stat = "identity") + scale_x_date(date_breaks = "2 weeks") + 
+  geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
   labs(title = "COVID-19 Deaths by Week", subtitle = "Montgomery County, PA (tuesdays") +
   xlab("Week") +
   ylab("Total Number of Deaths") +
   theme(axis.text.x=element_text(angle=60, hjust=1))
 ```
+
+
 ### Comparing Calls for Fever with Confirmed Cases 
 Exploring the correlation between number of calls for fever and number of confirmed cases we see a lag in the trends which may be indicative of the delay between when COVID-19 may have started affecting people in the area vs when confirmation of diagnosis (not an individual basis but from a general big-picture perspective)
 ```{r, echo=FALSE, warning=FALSE}
@@ -227,6 +235,7 @@ Exploring the correlation between number of calls for fever and number of confir
 tz_latest_fever_2020$week <- as.Date(tz_latest_fever_2020$week)
 merged <- left_join(tz_latest_fever_2020, montco_data_cases, by = c("week" = "date"))
 merged$number_of_cases[is.na(merged$number_of_cases)] <- 0
+
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -265,4 +274,8 @@ ggplot(merged, aes(x=week)) +
 * COVID-19 Case Numbers - [John Hopkins University] (https://coronavirus.jhu.edu/map.html) 
 * Montgomery County EMS Data - Compiled and provided by [Mike Chirico] (https://www.kaggle.com/mchirico/montcoalert) (originally sourced from montcoalert.org)
 
-
+Last Updated:
+```{r, echo=FALSE}
+last_updated <- Sys.time()
+last_updated
+```
