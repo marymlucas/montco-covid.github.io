@@ -16,12 +16,10 @@ library(data.table) # need this for the "%like%"function
 ```{r, echo=FALSE}
 tz_latest <- read.csv("https://storage.googleapis.com/montco-stats/tz.csv")
 jhu_latest <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv")
-```
-
-```{r, echo=FALSE}
 jhu_deaths <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")
 ```
- 
+
+
 ```{r, echo=FALSE}
 # data cleanup
 tz_latest$datetime <- ymd_hms(tz_latest$timeStamp, tz=NULL)
