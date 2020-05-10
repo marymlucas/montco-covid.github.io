@@ -80,6 +80,14 @@ plot_by_complaint(by_complaint(tz_latest, "medic_alert_alarms", "EMS: MEDICAL AL
 
 ```
 
+### All EMS related Calls
+A drop off in all EMS calls, likely both a strong reflection of the quarantine measures and of people not wanting to go to hospital due to fear of contracting Sars-CoV-2?
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Calls for all EMS complaints
+plot_by_complaint(by_complaint_like(tz_latest, "ems", "EMS"), "EMS Services (all)")
+```
+
 
 ### Traffic-related incidents
 A total drop off in 911 calls for traffic-related, likely a strong reflection of the quarantine measures, fewer people out and about.
@@ -108,6 +116,9 @@ plot_by_complaint_2020(by_complaint_2020(tz_latest, "cardiac", "EMS: CARDIAC EME
 
 # Calls for Cardiac Arrests
 plot_by_complaint_2020(by_complaint_2020(tz_latest, "cardiac_arrests", "EMS: CARDIAC ARREST"), "Cardiac Arrests")
+
+# All EMS
+plot_by_complaint_2020(by_complaint_like_2020(tz_latest, "ems", "EMS"), "All EMS")
 
 ```
 
