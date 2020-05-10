@@ -80,6 +80,7 @@ plot_by_complaint(by_complaint(tz_latest, "medic_alert_alarms", "EMS: MEDICAL AL
 
 ```
 
+
 ### Traffic-related incidents
 A total drop off in 911 calls for traffic-related, likely a strong reflection of the quarantine measures, fewer people out and about.
 
@@ -96,23 +97,18 @@ Narrowing down the focus on the data to just 2020, from around the presumed star
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
-# Extract 2020 call data for fever
-tz_latest_fever_2020 <- tz_latest %>% filter(datetime>= "2020-01-01" & title == "EMS: FEVER") %>% group_by(week=floor_date(datetime, "week")) %>%
-  tally(name = 'number_of_calls_fever_2020')  
+# fever
+plot_by_complaint_2020(by_complaint_2020(tz_latest, "fever", "EMS: FEVER"), "Fever")
 
-min_date = as.Date("2020-01-01")
-max_date = Sys.Date()
-lims = c(min_date, max_date)
+# Calls for Respiratory Emergencies
+plot_by_complaint_2020(by_complaint_2020(tz_latest, "respiratory", "EMS: RESPIRATORY EMERGENCY"), "Respiratory Emergencies")
 
-#tz_latest_fever_2020
-ggplot(tz_latest_fever_2020, aes(x=as.Date(week), y=number_of_calls_fever_2020)) +
-  geom_bar(stat="identity") + scale_x_date(date_breaks = "week", limits = lims) +
-  geom_smooth(method = "gam", color = "red", se = FALSE) +
-  theme_minimal() +
-  labs(title = "911 Calls for Fever", subtitle = "Montgomery County, PA") +
-  xlab("Month") +
-  ylab("Number of Calls") +
-  theme(axis.text.x=element_text(angle=60, hjust=1))
+# Calls for Cardiac Emergencies
+plot_by_complaint_2020(by_complaint_2020(tz_latest, "cardiac", "EMS: CARDIAC EMERGENCY"), "Cardiac Emergencies")
+
+# Calls for Cardiac Arrests
+plot_by_complaint_2020(by_complaint_2020(tz_latest, "cardiac_arrests", "EMS: CARDIAC ARREST"), "Cardiac Arrests")
+
 ```
 
 ```{r, echo=FALSE, warning=FALSE,message=FALSE}
@@ -170,6 +166,7 @@ ggplot(montco_data_deaths, aes(x=as.Date(date), y=number_of_deaths)) +
 Exploring the correlation between number of calls for fever and number of confirmed cases we see a lag in the trends which may be indicative of the delay between when COVID-19 may have started affecting people in the area vs when confirmation of diagnosis (not an individual basis but from a general big-picture perspective)
 ```{r, echo=FALSE, warning=FALSE}
 #merge the two
+tz_latest_fever_2020 = by_complaint_2020(tz_latest, "fever", "EMS: FEVER")
 tz_latest_fever_2020$week <- as.Date(tz_latest_fever_2020$week)
 merged <- left_join(tz_latest_fever_2020, montco_data_cases, by = c("week" = "date"))
 merged$number_of_cases[is.na(merged$number_of_cases)] <- 0
@@ -185,7 +182,7 @@ casesColor <- "magenta"
 
 ggplot(merged, aes(x=week)) +
   
-  geom_line( aes(y=number_of_calls_fever_2020), color=callsColor) +
+  geom_line( aes(y=number_of_calls), color=callsColor) +
   scale_x_date(date_breaks = "2 weeks") +
   theme_minimal() +
   geom_line( aes(y=number_of_cases / coeff), color=casesColor) +
@@ -217,8 +214,8 @@ ggplot(merged, aes(x=week)) +
 * <a href="https://www.npr.org/sections/health-shots/2020/05/06/850454989/eerie-emptiness-of-ers-worries-doctors-where-are-the-heart-attacks-and-strokes">Eerie Emptiness Of ERs Worries Doctors: Where Are The Heart Attacks And Strokes?</a>
 
 
-Last Updated:
+Last Updated: `r Sys.Date()`
 ```{r, echo=FALSE}
-last_updated <- Sys.time()
-last_updated
+last_updated <- Sys.Date()
+
 ```
