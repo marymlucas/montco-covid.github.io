@@ -30,11 +30,11 @@ tz_latest$zip <- as.character(tz_latest$zip)
 ```
 **This is a work in progress. Please check in regularly for more updated plots. I try to update this page at least twice a week or more.**
 
-## Historical Trends In 911 Calls From 2015 To Present For Select Complaints
+## Historical Trends In 911 Calls From 2017 To Present For Select Complaints
 
 ### Fever
 Very notable spike in calls at the beginning of 2020 compared to previous years.  Scroll down to see a more focused plot specific for 2020 calls.
-*The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.*
+*The ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19. We see a slight pick-up beginning of May, will be interesting to see if it starts to trend up again.*
 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -53,7 +53,7 @@ plot_by_complaint(by_complaint(tz_latest, "respiratory", "EMS: RESPIRATORY EMERG
 ```
 
 ### Cardiac Emergencies
-No noticeable spike here around COVID-19. Hoever, the ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.  This trend is now being reported in the news as well (see references section below)
+No noticeable spike here around COVID-19. However, the ongoing drop in calls is very concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.  This trend is now being reported in the media as well (see references section below)
 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -63,7 +63,7 @@ plot_by_complaint(by_complaint(tz_latest, "cardiac", "EMS: CARDIAC EMERGENCY"), 
 ```
 
 ### Cardiac Arrests
-Fairly consistent, although maybe a bit of a peak in April?
+Fairly consistent. 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for Cardiac Arrests
@@ -72,7 +72,7 @@ plot_by_complaint(by_complaint(tz_latest, "cardiac_arrests", "EMS: CARDIAC ARRES
 ```
 
 ### Medical Alert Alarms
-A noticeable increase in medic alert alarms starting late 2019, may be completely unrelated but would be interesting to triangulate and see if most of these are from nursing home locations?  
+A noticeable increase in medic alert alarms starting late 2019, may be completely unrelated but would be interesting to triangulate and see if most of these are from nursing home locations?
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for Medic Alert Alarms
@@ -81,7 +81,7 @@ plot_by_complaint(by_complaint(tz_latest, "medic_alert_alarms", "EMS: MEDICAL AL
 ```
 
 ### All EMS related Calls
-A drop off in all EMS calls, likely both a strong reflection of the quarantine measures and of people not wanting to go to hospital due to fear of contracting Sars-CoV-2?
+A drop off in all EMS calls, likely both a strong reflection of the quarantine measures and of people not wanting to go to hospital due to fear of contracting Sars-CoV-2? (See linked media article in the references section.)
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Calls for all EMS complaints
@@ -100,7 +100,7 @@ plot_by_complaint(by_complaint_like(tz_latest, "traffic", "Traffic"), "Traffic-R
 
 
 ## SINCE START OF COVID-19
-Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US.  While we now see the number of calls dropping to early February levels, the ongoing drop in calls is concerning because it may imply people are now reluctant to call 911 and go to hospital for fear of getting exposed to COVID-19.
+Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US.
 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -141,7 +141,7 @@ ggplot(montco_data_cases, aes(x=as.Date(date), y=number_of_cases)) +
   geom_bar(stat = "identity") + scale_x_date(date_breaks = "2 weeks") + 
   geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
-  labs(title = "COVID-19 Confirmes Cases by Week", subtitle = "Montgomery County, PA (tuesdays") +
+  labs(title = "COVID-19 Confirmed Cases (Cumulative)", subtitle = "Montgomery County, PA (tuesdays") +
   xlab("Week") +
   ylab("Total Number of Cases") +
   theme(axis.text.x=element_text(angle=60, hjust=1))
@@ -166,7 +166,7 @@ ggplot(montco_data_deaths, aes(x=as.Date(date), y=number_of_deaths)) +
   geom_bar(stat = "identity") + scale_x_date(date_breaks = "2 weeks") + 
   geom_smooth(method = "gam", color = "red", se = FALSE) +
   theme_minimal() +
-  labs(title = "COVID-19 Deaths by Week", subtitle = "Montgomery County, PA (tuesdays") +
+  labs(title = "COVID-19 Deaths (Cumulative)", subtitle = "Montgomery County, PA (Tuesdays") +
   xlab("Week") +
   ylab("Total Number of Deaths") +
   theme(axis.text.x=element_text(angle=60, hjust=1))
@@ -213,7 +213,7 @@ ggplot(merged, aes(x=week)) +
     axis.text.x=element_text(angle=60, hjust=1)
   ) +
 
-  labs(title = "Number of 911 Calls for Fever compared with Number of Confirmed Cases", subtitle = "Montgomery County, PA")
+  labs(title = "Number of 911 Calls for Fever compared with Confirmed (cumulative) Cases", subtitle = "Montgomery County, PA")
 ```
 
 ### DATA SOURCES:
@@ -224,9 +224,7 @@ ggplot(merged, aes(x=week)) +
 * <a href="https://www.acc.org/latest-in-cardiology/articles/2020/04/22/13/36/the-new-pandemic-threat-people-may-die-because-theyre-not-calling-911-coronavirus-disease-2019-covid-19">The New Pandemic Threat: People May Die Because They’re Not Calling 911</a>
 * <a href="https://www.npr.org/sections/health-shots/2020/05/06/850454989/eerie-emptiness-of-ers-worries-doctors-where-are-the-heart-attacks-and-strokes">Eerie Emptiness Of ERs Worries Doctors: Where Are The Heart Attacks And Strokes?</a>
 
+<a href="https://github.com/marymlucas">My Github</a> 
 
 Last Updated: `r Sys.Date()`
-```{r, echo=FALSE}
-last_updated <- Sys.Date()
 
-```
