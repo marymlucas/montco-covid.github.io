@@ -99,7 +99,7 @@ plot_by_complaint(by_complaint_like(tz_latest, "traffic", "Traffic"), "Traffic-R
 ```
 
 
-## SINCE START OF COVID-19
+## SINCE PRESUMED START OF COVID-19 PANDEMIC
 Narrowing down the focus on the data to just 2020, from around the presumed start of COVID-19 spread in the US.
 
 
