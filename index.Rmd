@@ -226,5 +226,7 @@ ggplot(merged, aes(x=week)) +
 
 <a href="https://github.com/marymlucas">My Github</a> 
 
-Last Updated: `r Sys.Date()`
-
+Last Updated:
+```{r echo=FALSE}
+Sys.time()
+```
